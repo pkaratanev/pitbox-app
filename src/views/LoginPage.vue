@@ -33,7 +33,9 @@
           ></ion-input>
         </ion-item>
 
-        <ion-button expand="block" color="primary">Login</ion-button>
+        <ion-button expand="block" color="primary" @click="login">
+          Login
+        </ion-button>
         <ion-button expand="block" color="secondary" router-link="/register">
           Register
         </ion-button>
@@ -43,6 +45,8 @@
 </template>
 
 <script setup lang="ts">
+import axios from "axios";
+
 import {
   IonContent,
   IonHeader,
@@ -54,4 +58,8 @@ import {
   IonInput,
   IonButton,
 } from "@ionic/vue";
+
+function login() {
+  console.log("test");
+}
 </script>
