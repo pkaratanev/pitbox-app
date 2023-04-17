@@ -21,6 +21,7 @@
             :clear-input="true"
             type="email"
             placeholder="email@domain.com"
+            v-model="email"
           ></ion-input>
         </ion-item>
 
@@ -46,6 +47,9 @@
 
 <script setup lang="ts">
 import axios from "axios";
+import { Device } from "@capacitor/device";
+import { General } from "../constants/General";
+import { useGeneralStore } from "../store/GeneralStore";
 
 import {
   IonContent,
@@ -59,7 +63,22 @@ import {
   IonButton,
 } from "@ionic/vue";
 
-function login() {
-  console.log("test");
+let email: string | null = null;
+let password: string | null = null;
+
+async function login() {
+  const deviceID = await Device.getId();
+
+  axios
+    .post(General.API_URL + "/login", { email, password, deviceID })
+    .then((response) => {
+      let key = response.split("|")[1];
+    });
+
+  const generalStore = useGeneralStore();
+
+  generalStore.setApiKey("test");
+
+  console.log(generalStore.getApiKey);
 }
 </script>
