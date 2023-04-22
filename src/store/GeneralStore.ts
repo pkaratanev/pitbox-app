@@ -4,6 +4,7 @@ export const useGeneralStore = defineStore("GeneralStore", {
   state: () => {
     return {
         apiKey: null as string | null,
+        user: null as object | null
       }
   },
   getters: {

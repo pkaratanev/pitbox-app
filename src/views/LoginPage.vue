@@ -1,3 +1,45 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import type { Ref } from "vue";
+import axios from "axios";
+import { General } from "../constants/General";
+import { useGeneralStore } from "../store/GeneralStore";
+
+import {
+  IonContent,
+  IonHeader,
+  IonList,
+  IonPage,
+  IonItem,
+  IonTitle,
+  IonToolbar,
+  IonInput,
+  IonButton,
+} from "@ionic/vue";
+
+const email: Ref<string> = ref("");
+const password: Ref<string> = ref("");
+
+function login() {
+  const generalStore = useGeneralStore();
+
+  axios
+    .post(General.API_URL + "/login", {
+      email: email.value,
+      password: password.value,
+    })
+    .catch((e) => {
+      console.error(e);
+    })
+    .then((response) => {
+      console.log(response);
+
+      // const key = response.data.split("|")[1];
+      // generalStore.setApiKey(key);
+    });
+}
+</script>
+
 <template>
   <ion-page>
     <ion-header :translucent="true">
@@ -22,7 +64,8 @@
             type="email"
             placeholder="email@domain.com"
             v-model="email"
-          ></ion-input>
+          >
+          </ion-input>
         </ion-item>
 
         <ion-item>
@@ -31,6 +74,7 @@
             label-placement="stacked"
             :clear-input="true"
             type="password"
+            v-model="password"
           ></ion-input>
         </ion-item>
 
@@ -44,41 +88,3 @@
     </ion-content>
   </ion-page>
 </template>
-
-<script setup lang="ts">
-import axios from "axios";
-import { Device } from "@capacitor/device";
-import { General } from "../constants/General";
-import { useGeneralStore } from "../store/GeneralStore";
-
-import {
-  IonContent,
-  IonHeader,
-  IonList,
-  IonPage,
-  IonItem,
-  IonTitle,
-  IonToolbar,
-  IonInput,
-  IonButton,
-} from "@ionic/vue";
-
-let email: string | null = null;
-let password: string | null = null;
-
-async function login() {
-  const deviceID = await Device.getId();
-
-  axios
-    .post(General.API_URL + "/login", { email, password, deviceID })
-    .then((response) => {
-      let key = response.split("|")[1];
-    });
-
-  const generalStore = useGeneralStore();
-
-  generalStore.setApiKey("test");
-
-  console.log(generalStore.getApiKey);
-}
-</script>
