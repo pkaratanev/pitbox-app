@@ -20,11 +20,25 @@ import {
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
 
+interface User {
+  id: number;
+  name: string;
+  email: string;
+  email_verified_at: null;
+  created_at: null;
+  updated_at: null;
+}
+
+interface Data {
+  apiKey: string;
+  user: User;
+}
+
 function login() {
   const generalStore = useGeneralStore();
 
   axios
-    .post(General.API_URL + "/login", {
+    .post<Data>(General.API_URL + "/login", {
       email: email.value,
       password: password.value,
     })
@@ -32,10 +46,8 @@ function login() {
       console.error(e);
     })
     .then((response) => {
-      console.log(response);
-
-      // const key = response.data.split("|")[1];
-      // generalStore.setApiKey(key);
+      generalStore.setApiKey(response.data.apiKey.split("|")[1]);
+      generalStore.setUser(response.data.user);
     });
 }
 </script>

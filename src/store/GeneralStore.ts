@@ -9,10 +9,14 @@ export const useGeneralStore = defineStore("GeneralStore", {
   },
   getters: {
     getApiKey: (state) => state.apiKey,
+    getUser: (state) => state.user,
   },
   actions: {
     setApiKey(key: string) {
       this.apiKey = key;
     },
+    setUser(data: object) {
+      this.user = data;
+    }
   },
 });
