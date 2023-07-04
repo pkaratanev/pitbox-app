@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import type { Ref } from "vue";
-import axios from "axios";
-import { General } from "../constants/General";
+import axios from "../helpers/axios";
 import { useGeneralStore } from "../store/GeneralStore";
 
 import {
@@ -20,34 +19,20 @@ import {
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  email_verified_at: null;
-  created_at: null;
-  updated_at: null;
-}
-
-interface Data {
-  apiKey: string;
-  user: User;
-}
-
 function login() {
   const generalStore = useGeneralStore();
 
   axios
-    .post<Data>(General.API_URL + "/login", {
+    .post("/login", {
       email: email.value,
       password: password.value,
     })
     .catch((e) => {
       console.error(e);
     })
-    .then((response) => {
-      generalStore.setApiKey(response.data.apiKey.split("|")[1]);
-      generalStore.setUser(response.data.user);
+    .then((response: any) => {
+      generalStore.setApiKey(response.apiKey.split("|")[1]);
+      generalStore.setUser(response.user);
     });
 }
 </script>
