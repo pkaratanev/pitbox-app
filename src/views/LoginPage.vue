@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import type { Ref } from "vue";
 import axios from "../helpers/axios";
+import { useRouter } from "vue-router";
 import { useGeneralStore } from "../store/GeneralStore";
 
 import {
@@ -16,8 +17,11 @@ import {
   IonButton,
 } from "@ionic/vue";
 
+const router = useRouter();
+
 const email: Ref<string> = ref("");
 const password: Ref<string> = ref("");
+const errors: Ref<any> = ref([]);
 
 function login() {
   const generalStore = useGeneralStore();
@@ -27,12 +31,14 @@ function login() {
       email: email.value,
       password: password.value,
     })
-    .catch((e) => {
-      console.error(e);
-    })
     .then((response: any) => {
       generalStore.setApiKey(response.apiKey.split("|")[1]);
       generalStore.setUser(response.user);
+
+      router.push("/home");
+    })
+    .catch((e: any) => {
+      errors.value = e.response.data.errors;
     });
 }
 </script>
