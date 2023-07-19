@@ -1,10 +1,11 @@
 import { defineStore } from "pinia";
+import { useLocalStorage } from "@vueuse/core"
 
 export const useGeneralStore = defineStore("GeneralStore", {
   state: () => {
     return {
-        apiKey: null as string | null,
-        user: null as object | null
+        apiKey: useLocalStorage('apiKey', null) as any,
+        user: useLocalStorage('user', {}) as any,
       }
   },
   getters: {
