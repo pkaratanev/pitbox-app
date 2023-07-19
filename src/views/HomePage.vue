@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import type { Ref } from "vue";
+import axios from "../helpers/axios";
 
 import {
   IonButton,
@@ -16,20 +17,36 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonCardSubtitle,
   IonCardContent,
 } from "@ionic/vue";
 
 import { search, personCircle } from "ionicons/icons";
 
 const showSearch: Ref<boolean> = ref(false);
+const currentPage: Ref<number> = ref(1);
+
+const fetchGarages = () => {
+  return axios
+    .get(`/garages?page=${currentPage.value}`)
+    .then((response: any) => {
+      console.log(response);
+    })
+    .catch((e: any) => {
+      console.error(e);
+    });
+};
 
 const handleRefresh = (event: any) => {
   setTimeout(() => {
-    // Any calls to load data go here
-    event.target.complete();
+    fetchGarages().then(() => {
+      event.target.complete();
+    });
   }, 1000);
 };
+
+onMounted(() => {
+  fetchGarages();
+});
 </script>
 
 <template>
@@ -41,7 +58,7 @@ const handleRefresh = (event: any) => {
         </ion-button>
       </ion-buttons>
       <ion-buttons slot="primary">
-        <ion-button>
+        <ion-button @click="showSearch = !showSearch">
           <ion-icon slot="icon-only" :icon="search"></ion-icon>
         </ion-button>
       </ion-buttons>
@@ -71,5 +88,9 @@ const handleRefresh = (event: any) => {
         nothing less.
       </ion-card-content>
     </ion-card>
+
+    <!-- <ion-infinite-scroll @ionInfinite="ionInfinite">
+      <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    </ion-infinite-scroll> -->
   </ion-content>
 </template>
