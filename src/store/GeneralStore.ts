@@ -11,7 +11,7 @@ export const useGeneralStore = defineStore("GeneralStore", {
   getters: {
     getApiKey: (state) => state.apiKey,
     getUser: (state) => state.user,
-    isLoggedIn: (state) => !!state.user,
+    isLoggedIn: (state) => !!state.apiKey,
   },
   actions: {
     setApiKey(key: string) {
@@ -19,6 +19,10 @@ export const useGeneralStore = defineStore("GeneralStore", {
     },
     setUser(data: object) {
       this.user = data;
+    },
+    logOut() {
+      this.apiKey = null;
+      this.user = {};
     }
   },
 });

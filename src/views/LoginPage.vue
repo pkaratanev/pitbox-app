@@ -15,6 +15,9 @@ import {
   IonToolbar,
   IonInput,
   IonButton,
+  IonCol,
+  IonRow,
+  IonGrid,
 } from "@ionic/vue";
 
 const router = useRouter();
@@ -80,14 +83,27 @@ function login() {
             v-model="password"
           ></ion-input>
         </ion-item>
-
-        <ion-button expand="block" color="primary" @click="login">
-          Login
-        </ion-button>
-        <ion-button expand="block" color="secondary" router-link="/register">
-          Register
-        </ion-button>
       </ion-list>
+
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block" color="primary" @click="login">
+              Login
+            </ion-button>
+          </ion-col>
+
+          <ion-col>
+            <ion-button
+              expand="block"
+              color="secondary"
+              router-link="/register"
+            >
+              Register
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>

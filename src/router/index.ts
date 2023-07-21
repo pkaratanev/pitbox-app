@@ -26,10 +26,6 @@ const routes: Array<RouteRecordRaw> = [
     name: "Register",
     component: RegisterPage,
   },
-  {
-    path: "/message/:id",
-    component: () => import("../views/ViewMessagePage.vue"),
-  },
 ];
 
 const router = createRouter({
@@ -40,8 +36,10 @@ const router = createRouter({
 router.beforeEach(async (to) => {
   const generalStore = useGeneralStore();
 
-  if (!generalStore.isLoggedIn && to.name !== "Login") {
-    return { name: "Login" };
+  if (!generalStore.isLoggedIn) {
+    if (to.name !== "Login" && to.name !== "Register") {
+      return { name: "Login" };
+    }
   }
 });
 
