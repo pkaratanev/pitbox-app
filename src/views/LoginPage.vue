@@ -35,8 +35,14 @@ function login() {
       password: password.value,
     })
     .then((response: any) => {
-      generalStore.setApiKey(response.apiKey.split("|")[1]);
+      const key = response.apiKey.split("|")[1];
+
+      generalStore.setApiKey(key);
       generalStore.setUser(response.user);
+
+      if (key) {
+        axios.defaults.headers.common["Authorization"] = "Bearer " + key;
+      }
 
       router.push("/home");
     })
@@ -88,17 +94,13 @@ function login() {
       <ion-grid>
         <ion-row>
           <ion-col>
-            <ion-button expand="block" color="primary" @click="login">
+            <ion-button expand="block" color="secondary" @click="login">
               Login
             </ion-button>
           </ion-col>
 
           <ion-col>
-            <ion-button
-              expand="block"
-              color="secondary"
-              router-link="/register"
-            >
+            <ion-button expand="block" color="primary" router-link="/register">
               Register
             </ion-button>
           </ion-col>
